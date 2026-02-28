@@ -3,7 +3,9 @@ version: '4'
 
 services:
   devpod:
-    image: dewwripper/devpod:alpine-0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker-host.sock
