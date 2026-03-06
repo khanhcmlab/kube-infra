@@ -4,11 +4,11 @@ export KVVERSION=$(curl -sL https://api.github.com/repos/kube-vip/kube-vip/relea
 export INTERFACE=eth0
 
 # If your workstation has Docker:
-# alias kube-vip="docker run --network host --rm ghcr.io/kube-vip/kube-vip:$KVVERSION"
+alias kube-vip="docker run --network host --rm ghcr.io/kube-vip/kube-vip:$KVVERSION"
 
 # Generate a DaemonSet manifest in ARP mode for **services only**
 
-alias kube-vip="ctr image pull ghcr.io/kube-vip/kube-vip:$KVVERSION; ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:$KVVERSION vip /kube-vip"
+# alias kube-vip="ctr image pull ghcr.io/kube-vip/kube-vip:$KVVERSION; ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:$KVVERSION vip /kube-vip"
 
 kube-vip manifest daemonset \
     --interface $INTERFACE \
