@@ -1,0 +1,18 @@
+// .devcontainer/devcontainer.json
+{
+    "name": "devpod-template",
+    "dockerComposeFile": [
+        "./docker-compose.dev.yml"
+    ],
+    "service": "devpod",
+    "containerUser": "${localEnv:USER}",
+    "initializeCommand": "${localWorkspaceFolder}/.devcontainer/scripts/initialize-command.sh",
+    // "postCreateCommand": ".devcontainer/scripts/post-create-command.sh",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    // "forwardPorts": [3333],
+    "overrideCommand": true,
+    "workspaceFolder": "/home/${localEnv:USER}/workspace",
+    "remoteUser": "${localEnv:USER}"
+}

@@ -1,0 +1,12 @@
+# Use Alpine Linux latest as base image
+FROM dewwripper/devpod:alpine-0.0.1
+
+ARG DockerUSER=deww
+ARG DockerUID=503
+ARG DockerGID=20
+
+RUN wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
+    chmod +x /usr/local/bin/cloudflared
+
+# Final shell
+CMD [ "zsh" ]
