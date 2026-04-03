@@ -1,23 +1,43 @@
-# Install ArgoCD with Helm
+# Install ArgoCD with Kubectl
 
-This guide explains how to install ArgoCD with Helm.
+This guide explains how to install ArgoCD with kubectl.
 
-## 1. Add Argo Project Helm repository
+## 1. Create a namespace for ArgoCD
 
 ```bash
-helm repo add argo https://argoproj.github.io/argo-helm
+kubectl create namespace argocd
 ```
 
-## 2. Update Helm repositories
+## 2. Install ArgoCD
 
 ```bash
-helm repo update
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side
 ```
 
-## 3. Install ArgoCD
+## 3. Create ExternalName service for argocd-server
 
+Create an ExternalName service to expose the `argocd-server` to other namespaces.
+
+**argocd-server-external.yaml:**
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: argocd-server.argocd.svc.cluster.local
+  ports:
+  - port: 80
+    targetPort: 80
+  - port: 443
+    targetPort: 443
+```
+
+Apply the yaml file:
 ```bash
-helm install argocd argo/argo-cd --namespace argocd --create-namespace
+kubectl apply -f argocd-server-external.yaml
 ```
 
 ## 4. Access the ArgoCD API Server
