@@ -1,2 +1,6 @@
+global:
+  nodeSelector:
+    kubernetes.io/hostname: gl
+
 dex:
   enabled: false
