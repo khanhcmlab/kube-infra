@@ -1,6 +1,6 @@
 global:
   nodeSelector:
-    kubernetes.io/hostname: gl
+    node: hp
 
 dex:
   enabled: false
