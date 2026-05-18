@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sops-cmp-plugin
+  namespace: argocd
+data:
+  plugin.yaml: |
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
+    metadata:
+      name: sops
+    spec:
+      version: v1.0
+      generate:
+        # This command finds all .enc.yaml files and decrypts them on the fly 
+        # before running a standard kustomize build
+        command: ["sh", "-c"]
+        args: ["find . -name '*.enc.yaml' -exec sops --decrypt --in-place {} \\; && kustomize build ."]
