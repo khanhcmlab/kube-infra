@@ -6,7 +6,7 @@ data:
   exec.enabled: "false"
   oidc.config: |
     name: GitHub (via Dex)
-    issuer: https://dexpacity.khanhcm.xyz/
+    issuer: https://dexpacity.khanhcm.xyz
     clientID: argocd
     clientSecret: $oidc.dex.clientSecret
     requestedScopes: 
