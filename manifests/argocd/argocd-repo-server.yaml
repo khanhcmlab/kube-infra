@@ -57,7 +57,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: sops-plugin
-        image: custom-argocd-sops-image:latest 
+        image: quay.io/argoproj/argocd:v2.10.1
         command: ["/var/run/argocd/argocd-cmp-server"]
         env:
           - name: AWS_REGION
@@ -73,6 +73,8 @@ spec:
               secretKeyRef:
                 name: aws-kms-creds
                 key: AWS_SECRET_ACCESS_KEY
+          - name: PATH
+            value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/custom-tools
         resources:
           limits:
             cpu: 100m
@@ -88,6 +90,8 @@ spec:
           - mountPath: /home/argocd/cmp-server/config/plugin.yaml
             subPath: plugin.yaml
             name: sops-cmp-plugin
+          - mountPath: /custom-tools
+            name: custom-tools
       - args:
         - /usr/local/bin/argocd-repo-server
         - --port=8081
@@ -444,6 +448,15 @@ spec:
         volumeMounts:
         - mountPath: /var/run/argocd
           name: var-files
+      - name: download-tools
+        image: alpine:latest
+        command: ["sh", "-c"]
+        # Downloads SOPS into the shared volume and makes it executable
+        args: 
+          - wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64 && chmod +x /custom-tools/sops
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
       nodeSelector:
         kubernetes.io/os: linux
         node: hp
@@ -480,6 +493,8 @@ spec:
         name: sops-cmp-plugin
       - emptyDir: {}
         name: gpg-keyring
+      - name: custom-tools
+        emptyDir: {}
       - name: argocd-repo-server-tls
         secret:
           defaultMode: 420
