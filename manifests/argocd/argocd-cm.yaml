@@ -5,7 +5,7 @@ data:
   application.sync.impersonation.enabled: "false"
   exec.enabled: "false"
   oidc.config: |
-    name: GitHub (via Dex)
+    name: GitHub
     issuer: https://dexpacity.khanhcm.xyz
     clientID: argocd
     clientSecret: $oidc.dex.clientSecret
